@@ -576,7 +576,7 @@ class MagicLinkViewSet(viewsets.ModelViewSet):
         serializer.save(
             token=secrets.token_urlsafe(32),
             created_by=self.request.user,
-            expires_at=timezone.now() + timedelta(days=30),
+            expires_at=timezone.now() + timedelta(days=settings.MAGIC_LINK_LIFETIME_DAYS),
         )
 
     @action(detail=True, methods=["post"])

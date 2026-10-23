@@ -10,7 +10,8 @@ is None, so allow" branch: an object with no organization is a shared library
 row, and writing those is the Security Team's.
 """
 
-from rest_framework import permissions
+from django.conf import settings
+from rest_framework import exceptions, permissions
 
 from apps.core.scope import threat_model_id_of
 
@@ -182,3 +183,16 @@ class WritableParentsMixin:
     def perform_update(self, serializer):
         self.check_writable_parents(serializer)
         super().perform_update(serializer)
+
+
+class RegistrationEnabled(permissions.BasePermission):
+    """
+    Refuses account registration while settings.REGISTRATION_ENABLED is False.
+    """
+
+    message = "Registration is disabled on this instance."
+
+    def has_permission(self, request, view):
+        if not settings.REGISTRATION_ENABLED:
+            raise exceptions.PermissionDenied(self.message)
+        return True

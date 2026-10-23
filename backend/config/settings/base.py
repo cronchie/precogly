@@ -253,7 +253,16 @@ REST_AUTH = {
     "OLD_PASSWORD_FIELD_ENABLED": True,
     # Use custom serializer that generates frontend URLs for password reset
     "PASSWORD_RESET_SERIALIZER": "apps.core.serializers.CustomPasswordResetSerializer",
+    # RegistrationEnabled refuses POST /api/auth/registration/ while
+    # REGISTRATION_ENABLED (below) is False
+    "REGISTER_PERMISSION_CLASSES": ("apps.core.permissions.RegistrationEnabled",),
 }
+
+# Controls whether visitors can create accounts through the signup API.
+REGISTRATION_ENABLED = env.bool("REGISTRATION_ENABLED", default=True)
+
+# Validity window for magic links.
+MAGIC_LINK_LIFETIME_DAYS = env.int("MAGIC_LINK_LIFETIME_DAYS", default=30)
 
 
 # django-allauth settings
