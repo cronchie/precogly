@@ -30,6 +30,7 @@ services:
       context: ./frontend
       target: prod
     volumes: !reset []
+    # Loopback only: Caddy on the host owns 80/443, terminates TLS and proxies here
     ports: !override
-      - "80:80"
+      - "127.0.0.1:8080:80"
     environment: {}
